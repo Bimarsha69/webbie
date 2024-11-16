@@ -5,9 +5,10 @@ import { Project } from '../types';
 interface DashboardProps {
   projects: Project[];
   onSaveCode: (projectId: number, code: string) => void;
+  isLoading: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ projects, onSaveCode }) => {
+const Dashboard: React.FC<DashboardProps> = ({ projects, onSaveCode, isLoading }) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const handleProjectSelect = (project: Project) => {
@@ -25,6 +26,14 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, onSaveCode }) => {
       onSaveCode(selectedProject.id, selectedProject.code);
     }
   };
+
+  if (isLoading) {
+    return <div className="container mx-auto mt-8 p-4">Loading projects...</div>;
+  }
+
+  if (projects.length === 0) {
+    return <div className="container mx-auto mt-8 p-4">No projects found.</div>;
+  }
 
   return (
     <div className="container mx-auto mt-8 p-4">
